@@ -5,7 +5,7 @@ import TileMap.Background;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-import main.GamePanel;
+import Main.GamePanel;
 
 public class MenuState extends GameState {
 	

@@ -6,7 +6,7 @@ import java.awt.image.*;
 import java.io.*;
 import javax.imageio.ImageIO;
 
-import main.GamePanel;
+import Main.GamePanel;
 
 public class TileMap {
 	
@@ -125,10 +125,23 @@ public class TileMap {
 	public int getWidth() { return width; }
 	public int getHeight() { return height; }
 	
+	public int getIndex(int row, int col) {
+		if(row < 0 || row >= numRows || col < 0 || col >= numCols) {
+			return 0;
+		}
+		return map[row][col];
+	}
+	
 	public int getType(int row, int col) {
+		if(row < 0 || row >= numRows || col < 0 || col >= numCols) {
+			return Tile.BLOCKED;
+		}
 		int rc = map[row][col];
 		int r = rc / numTilesAcross;
 		int c = rc % numTilesAcross;
+		if(r >= tiles.length || c >= tiles[0].length) {
+			return Tile.NORMAL;
+		}
 		return tiles[r][c].getType();
 	}
 	
@@ -160,6 +173,7 @@ public class TileMap {
 			row < rowOffset + numRowsToDraw;
 			row++) {
 			
+			if(row < 0) continue;
 			if(row >= numRows) break;
 			
 			for(
@@ -167,6 +181,7 @@ public class TileMap {
 				col < colOffset + numColsToDraw;
 				col++) {
 				
+				if(col < 0) continue;
 				if(col >= numCols) break;
 				
 				if(map[row][col] == 0) continue;
@@ -174,6 +189,7 @@ public class TileMap {
 				int rc = map[row][col];
 				int r = rc / numTilesAcross;
 				int c = rc % numTilesAcross;
+				if(r >= tiles.length || c >= tiles[0].length) continue;
 				
 				g.drawImage(
 					tiles[r][c].getImage(),

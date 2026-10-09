@@ -140,6 +140,7 @@ public class Player extends MapObject {
 		// update position
 		getNextPosition();
 		checkTileMapCollision();
+		checkFlagCollision();
 		setPosition(xtemp, ytemp);
 		
 		// set animation
@@ -185,13 +186,35 @@ public class Player extends MapObject {
 		
 	}
 	
+	private void checkFlagCollision() {
+		int leftTile = (int)(x - cwidth / 2) / tileSize;
+		int rightTile = (int)(x + cwidth / 2 - 1) / tileSize;
+		int topTile = (int)(y - cheight / 2) / tileSize;
+		int bottomTile = (int)(y + cheight / 2 - 1) / tileSize;
+		
+		for(int r = topTile; r <= bottomTile; r++) {
+			for(int c = leftTile; c <= rightTile; c++) {
+				if(tileMap.getIndex(r, c) == 12) {
+					clear = true;
+					return;
+				}
+			}
+		}
+	}
+	
 	public void draw(Graphics2D g) {
 		setMapPosition();
 		
 		// draw player
 		super.draw(g);
 		if(clear) {
-			g.drawString("Clear!!", 100, 150);
+			Font prevFont = g.getFont();
+			Color prevColor = g.getColor();
+			g.setColor(Color.RED);
+			g.setFont(new Font("Arial", Font.BOLD, 18));
+			g.drawString("Clear!!", 90, 150);
+			g.setFont(prevFont);
+			g.setColor(prevColor);
 		}
 	}
 }

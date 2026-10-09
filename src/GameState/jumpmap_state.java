@@ -1,8 +1,8 @@
 package GameState;
 
-import main.GamePanel;
 import TileMap.*;
 import Entity.*;
+import Main.GamePanel;
 import Audio.AudioPlayer;
 
 import java.awt.*;
@@ -32,10 +32,20 @@ public class jumpmap_state extends GameState {
 		tileMap.setPosition(0, 0);
 		tileMap.setTween(1);
 		
-		bg = new Background("/Backgrounds/background.jpg", 0.1);
+		bg = new Background("/Backgrounds/bground.jpg", 0.1);
 		
 		player = new Player(tileMap);
-		player.setPosition(50, 800);
+		player.setPosition(100, 4400);
+		tileMap.setPosition(
+			GamePanel.WIDTH / 2 - player.getx(),
+			GamePanel.HEIGHT / 2 - player.gety()
+		);
+		bg.setPosition(
+			tileMap.getx(),
+			tileMap.gety(),
+			tileMap.getWidth(),
+			tileMap.getHeight()
+		);
 		
 		
 		bgMusic = new AudioPlayer("/Music/bgm.mp3");
@@ -54,7 +64,12 @@ public class jumpmap_state extends GameState {
 		);
 		
 		// set background
-		bg.setPosition(tileMap.getx(), tileMap.gety());
+		bg.setPosition(
+			tileMap.getx(),
+			tileMap.gety(),
+			tileMap.getWidth(),
+			tileMap.getHeight()
+		);
 
 	}
 	
@@ -68,17 +83,6 @@ public class jumpmap_state extends GameState {
 
         // draw player
         player.draw(g);
-
-        class MyKeyListener extends KeyAdapter {
-            public void keyPressed(KeyEvent e) {
-                Container contentPane = (Container)e.getSource();
-
-                if (e.getKeyCode() == KeyEvent.VK_UP) {
-                    g.drawString("Clear", 110, 900);
-                }
-
-            }
-        }
     }
 	
 	public void keyPressed(int k) {
@@ -87,7 +91,6 @@ public class jumpmap_state extends GameState {
 		if(k == KeyEvent.VK_UP) player.setUp(true);
 		if(k == KeyEvent.VK_DOWN) player.setDown(true);
 		if(k == KeyEvent.VK_SPACE) player.setJumping(true);
-		if(k == KeyEvent.VK_UP) player.setClear(true);
 	}
 	
 	public void keyReleased(int k) {
